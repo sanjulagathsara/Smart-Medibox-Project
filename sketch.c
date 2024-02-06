@@ -283,7 +283,7 @@ void set_time(){
 
   while(true){
     display.clearDisplay();
-    print_line("Enter hour: " + String(temp_minute),0,0,2);
+    print_line("Enter Minute: " + String(temp_minute),0,0,2);
 
     int pressed = wait_for_button_press();
 
@@ -352,7 +352,7 @@ void set_alarm(int alarm){
 
   while(true){
     display.clearDisplay();
-    print_line("Enter hour: " + String(temp_minute),0,0,2);
+    print_line("Enter Minute: " + String(temp_minute),0,0,2);
 
     int pressed = wait_for_button_press();
 
@@ -380,7 +380,8 @@ void set_alarm(int alarm){
   }
 
   display.clearDisplay();
-  alarm_triggered[alarm] = true;
+  alarm_enabled = true;
+  alarm_triggered[alarm] = false;
   print_line("Alarm "+String(alarm)+" is set",0,0,2);
   delay(1000);
 }

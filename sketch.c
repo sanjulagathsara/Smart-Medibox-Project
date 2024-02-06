@@ -44,7 +44,7 @@ int C_H = 523;
 int notes[] = {C,D,E,F,G,A,B,C_H};
 
 int current_mode = 0;
-int max_mode = 4;
+int max_modes = 4;
 String modes[] = {"1 - Set Time","2 - Set Alarm 1","3 - Set Alarm 2","4 - Disable Alarm"};
 
 void setup() {
@@ -200,6 +200,10 @@ void go_to_menu(void){
         current_mode = max_modes - 1;
       }
     }
+    else if(pressed == PB_OK){
+      delay(200);
+      run_mode(current_mode);
+    }
     else if(pressed == PB_CANCEL){
       delay(200);
       break;
@@ -227,4 +231,156 @@ int wait_for_button_press(){
       return PB_CANCEL;
     }
   }
+}
+
+void run_mode(int mode){
+  if(mode == 0){
+    set_time();
+  }
+  else if(mode == 1 || mode == 2){
+    set_alarm(mode - 1);
+  }
+  else if(mode == 3){
+    alarm_enabled = false;
+  }
+}
+
+
+
+void set_time(){
+  int temp_hour = hours;
+
+  while(true){
+    display.clearDisplay();
+    print_line("Enter hour: " + String(temp_hour),0,0,2);
+
+    int pressed = wait_for_button_press();
+
+      if(pressed == PB_UP){
+        delay(200);
+        temp_hour += 1;
+        temp_hour = temp_hour % 24;
+      }
+      else if(pressed == PB_DOWN){
+        delay(200);
+        temp_hour -= 1;
+        if(temp_hour <= -1){
+          temp_hour = 23;
+        }
+      }
+      else if(pressed == PB_OK){
+        delay(200);
+        hours = temp_hour;
+        break;
+      }
+      else if(pressed == PB_CANCEL){
+        delay(200);
+        break;
+      }
+  }
+
+  int temp_minute = minutes;
+
+  while(true){
+    display.clearDisplay();
+    print_line("Enter hour: " + String(temp_minute),0,0,2);
+
+    int pressed = wait_for_button_press();
+
+      if(pressed == PB_UP){
+        delay(200);
+        temp_minute += 1;
+        temp_minute = temp_minute % 60;
+      }
+      else if(pressed == PB_DOWN){
+        delay(200);
+        temp_minute -= 1;
+        if(temp_minute <= -1){
+          temp_minute = 59;
+        }
+      }
+      else if(pressed == PB_OK){
+        delay(200);
+        minutes = temp_minute;
+        break;
+      }
+      else if(pressed == PB_CANCEL){
+        delay(200);
+        break;
+      }
+  }
+
+  display.clearDisplay();
+  print_line("Time is set",0,0,2);
+  delay(1000);
+
+}
+
+void set_alarm(int alarm){
+  int temp_hour = alarm_hours[alarm];
+
+  while(true){
+    display.clearDisplay();
+    print_line("Enter hour: " + String(temp_hour),0,0,2);
+
+    int pressed = wait_for_button_press();
+
+      if(pressed == PB_UP){
+        delay(200);
+        temp_hour += 1;
+        temp_hour = temp_hour % 24;
+      }
+      else if(pressed == PB_DOWN){
+        delay(200);
+        temp_hour -= 1;
+        if(temp_hour <= -1){
+          temp_hour = 23;
+        }
+      }
+      else if(pressed == PB_OK){
+        delay(200);
+        alarm_hours[alarm] = temp_hour;
+        break;
+      }
+      else if(pressed == PB_CANCEL){
+        delay(200);
+        break;
+      }
+  }
+
+  int temp_minute = alarm_minutes[alarm];
+
+  while(true){
+    display.clearDisplay();
+    print_line("Enter hour: " + String(temp_minute),0,0,2);
+
+    int pressed = wait_for_button_press();
+
+      if(pressed == PB_UP){
+        delay(200);
+        temp_minute += 1;
+        temp_minute = temp_minute % 60;
+      }
+      else if(pressed == PB_DOWN){
+        delay(200);
+        temp_minute -= 1;
+        if(temp_minute <= -1){
+          temp_minute = 59;
+        }
+      }
+      else if(pressed == PB_OK){
+        delay(200);
+        alarm_minutes[alarm] = temp_minute;
+        break;
+      }
+      else if(pressed == PB_CANCEL){
+        delay(200);
+        break;
+      }
+  }
+
+  display.clearDisplay();
+  alarm_triggered[alarm] = true;
+  print_line("Alarm "+String(alarm)+" is set",0,0,2);
+  delay(1000);
 }

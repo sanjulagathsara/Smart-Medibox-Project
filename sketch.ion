@@ -80,6 +80,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   update_time_with_check_alarm();
   if(digitalRead(PB_OK) == LOW){
+    button_beep();
     delay(200);
     go_to_menu();
   }
@@ -215,18 +216,22 @@ void go_to_menu(void){
 int wait_for_button_press(){
   while(true){
     if(digitalRead(PB_UP) == LOW){
+      button_beep();
       delay(200);
       return PB_UP;
     }
     else if(digitalRead(PB_DOWN) == LOW){
+      button_beep();
       delay(200);
       return PB_DOWN;
     }
     else if(digitalRead(PB_OK) == LOW){
+      button_beep();
       delay(200);
       return PB_OK;
     }
     else if(digitalRead(PB_CANCEL) == LOW){
+      button_beep();
       delay(200);
       return PB_CANCEL;
     }
@@ -244,8 +249,6 @@ void run_mode(int mode){
     alarm_enabled = false;
   }
 }
-
-
 
 void set_time(){
   int temp_hour = hours;
@@ -384,4 +387,11 @@ void set_alarm(int alarm){
   alarm_triggered[alarm] = false;
   print_line("Alarm "+String(alarm)+" is set",0,0,2);
   delay(1000);
+}
+
+void button_beep(){
+  tone(BUZZER,notes[0]);
+  delay(10);
+  noTone(BUZZER);
+  delay(10);
 }

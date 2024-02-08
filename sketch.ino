@@ -318,7 +318,7 @@ void set_time_zone(){
       }
       else if(pressed == PB_OK){
         delay(200);
-        UTC_OFFSET = UTC_OFFSET+(temp_hour * 3600);
+        UTC_OFFSET = (temp_hour * 3600);
         break;
       }
       else if(pressed == PB_CANCEL){

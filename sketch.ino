@@ -11,8 +11,8 @@
 #define DISPLAY_ADDRESS 0x3C
 
 #define NTP_SERVER   "pool.ntp.org"
-#define UTC_OFFSET 0
-#define UTC_OFFSET_DST 0
+int UTC_OFFSET = 0;
+int UTC_OFFSET_DST = 0;
 
 // Declare objects
 Adafruit_SSD1306 display(DISPLAY_WIDTH,DISPLAY_HEIGHT,&Wire,DISPLAY_RESET);
@@ -37,10 +37,10 @@ unsigned long  time_now = 0;
 unsigned long  time_last = 0;
 
 bool alarm_enabled = true;
-int n_alarms = 2;
-int alarm_hours[] = {0,1};
-int alarm_minutes[] = {1,10};
-bool alarm_triggered[] = {false,false};
+int n_alarms = 3;
+int alarm_hours[] = {0,1,2};
+int alarm_minutes[] = {1,10,33};
+bool alarm_triggered[] = {false,false,false};
 
 int n_notes = 8;
 int C = 262;
@@ -56,7 +56,7 @@ int notes[] = {C,D,E,F,G,A,B,C_H};
 
 int current_mode = 0;
 int max_modes = 4;
-String modes[] = {"1 - Set Time","2 - Set Alarm 1","3 - Set Alarm 2","4 - Disable Alarm"};
+String modes[] = {"1 - Set Time Zone","2 - Set Alarm 1","3 - Set Alarm 2","4 - Set Alarm 3","5 - Disable Alarm"};
 
 void setup() {
   // put your setup code here, to run once:
@@ -285,18 +285,18 @@ int wait_for_button_press(){
 
 void run_mode(int mode){
   if(mode == 0){
-    set_time();
+    set_time_zone();
   }
-  else if(mode == 1 || mode == 2){
+  else if(mode == 1 || mode == 2 || mode == 3){
     set_alarm(mode - 1);
   }
-  else if(mode == 3){
+  else if(mode == 4){
     alarm_enabled = false;
   }
 }
 
-void set_time(){
-  int temp_hour = hours;
+void set_time_zone(){
+  int temp_hour = 0;
 
   while(true){
     display.clearDisplay();
@@ -318,7 +318,7 @@ void set_time(){
       }
       else if(pressed == PB_OK){
         delay(200);
-        hours = temp_hour;
+        UTC_OFFSET = UTC_OFFSET+(temp_hour * 3600);
         break;
       }
       else if(pressed == PB_CANCEL){
@@ -327,7 +327,7 @@ void set_time(){
       }
   }
 
-  int temp_minute = minutes;
+  int temp_minute = 0;
 
   while(true){
     display.clearDisplay();
@@ -337,19 +337,19 @@ void set_time(){
 
       if(pressed == PB_UP){
         delay(200);
-        temp_minute += 1;
+        temp_minute += 30;
         temp_minute = temp_minute % 60;
       }
       else if(pressed == PB_DOWN){
         delay(200);
-        temp_minute -= 1;
+        temp_minute -= 30;
         if(temp_minute <= -1){
           temp_minute = 59;
         }
       }
       else if(pressed == PB_OK){
         delay(200);
-        minutes = temp_minute;
+        UTC_OFFSET = UTC_OFFSET+(temp_minute * 60);
         break;
       }
       else if(pressed == PB_CANCEL){
@@ -358,8 +358,11 @@ void set_time(){
       }
   }
 
+  configTime(UTC_OFFSET,UTC_OFFSET,NTP_SERVER);
+
+
   display.clearDisplay();
-  print_line("Time is set",0,0,2);
+  print_line("Time Zone is set",0,0,2);
   delay(1000);
 
 }

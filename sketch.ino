@@ -10,6 +10,7 @@
 #define DISPLAY_RESET -1
 #define DISPLAY_ADDRESS 0x3C
 
+// NTP Server details
 #define NTP_SERVER   "pool.ntp.org"
 int UTC_OFFSET = 0;
 int UTC_OFFSET_DST = 0;
@@ -18,13 +19,13 @@ int UTC_OFFSET_DST = 0;
 Adafruit_SSD1306 display(DISPLAY_WIDTH,DISPLAY_HEIGHT,&Wire,DISPLAY_RESET);
 DHTesp dhtSensor;
 
+// Define Pins
 #define BUZZER 5
 #define LED_1 15
 #define PB_CANCEL 34
 #define PB_OK 32
 #define PB_UP 35
 #define PB_DOWN 33
-
 #define DHTPIN 12
 
 // Gllobal Variables
@@ -42,6 +43,7 @@ int alarm_hours[] = {0,1,2};
 int alarm_minutes[] = {1,10,33};
 bool alarm_triggered[] = {false,false,false};
 
+// Notes for buzzer
 int n_notes = 8;
 int C = 262;
 int D = 294;
@@ -54,9 +56,14 @@ int C_H = 523;
 
 int notes[] = {C,D,E,F,G,A,B,C_H};
 
+// Mode parameters
 int current_mode = 0;
 int max_modes = 4;
 String modes[] = {"1 - Set Time Zone","2 - Set Alarm 1","3 - Set Alarm 2","4 - Set Alarm 3","5 - Disable Alarm"};
+
+/****************************************************************************
+-----------------------------   Setting Up  ----------------------------------
+****************************************************************************/
 
 void setup() {
   // put your setup code here, to run once:
@@ -101,6 +108,11 @@ void setup() {
 
 }
 
+/****************************************************************************
+--------------------------   Looping the Code ------------------------------
+****************************************************************************/
+
+
 void loop() {
   // put your main code here, to run repeatedly:
   update_time_with_check_alarm();
@@ -112,6 +124,10 @@ void loop() {
   check_temp();
   
 }
+
+/****************************************************************************
+--------------------   Function to printLine in OLED  -----------------------
+****************************************************************************/
 
 void print_line(String text,int column,int row,int text_size){
    // Clearing the buffer
@@ -126,6 +142,10 @@ void print_line(String text,int column,int row,int text_size){
   display.display();
 }
 
+/****************************************************************************
+--------------------   Function to print Time in OLED  -----------------------
+****************************************************************************/
+
 void print_time_now(void){
 
   display.clearDisplay();
@@ -138,6 +158,10 @@ void print_time_now(void){
   print_line(String(seconds),90, 0, 2);
 
 }
+
+/****************************************************************************
+-------------------------   Function to Update Time  -----------------------
+****************************************************************************/
 
 void update_time(void){
   // time_now = millis()/1000;
@@ -181,6 +205,10 @@ void update_time(void){
 
 }
 
+/****************************************************************************
+-----------   Function to Updating the time with Checking Alarm  -----------
+****************************************************************************/
+
 void update_time_with_check_alarm(void){
   print_time_now();
   update_time();
@@ -196,6 +224,10 @@ void update_time_with_check_alarm(void){
   }
 
 }
+
+/****************************************************************************
+--------------------   Function to Ring the Alarm  -----------------------
+****************************************************************************/
 
 void ring_alarm(void){
   display.clearDisplay();
@@ -222,6 +254,10 @@ void ring_alarm(void){
   display.clearDisplay();
 
 }
+
+/****************************************************************************
+--------------------------   Function to Go to Menu  -----------------------
+****************************************************************************/
 
 void go_to_menu(void){
   display.clearDisplay();
@@ -258,6 +294,10 @@ void go_to_menu(void){
   }
 }
 
+/****************************************************************************
+------------------   Function to wait for button press  --------------------
+****************************************************************************/
+
 int wait_for_button_press(){
   while(true){
     if(digitalRead(PB_UP) == LOW){
@@ -283,6 +323,10 @@ int wait_for_button_press(){
   }
 }
 
+/****************************************************************************
+---------------------------   Function to Run Mode  -----------------------
+****************************************************************************/
+
 void run_mode(int mode){
   if(mode == 0){
     set_time_zone();
@@ -294,6 +338,10 @@ void run_mode(int mode){
     alarm_enabled = false;
   }
 }
+
+/****************************************************************************
+-----------------------   Function to Set Time Zone   -----------------------
+****************************************************************************/
 
 void set_time_zone(){
   int temp_hour = 0;
@@ -312,9 +360,6 @@ void set_time_zone(){
       else if(pressed == PB_DOWN){
         delay(200);
         temp_hour -= 1;
-        if(temp_hour <= -1){
-          temp_hour = 23;
-        }
       }
       else if(pressed == PB_OK){
         delay(200);
@@ -349,7 +394,12 @@ void set_time_zone(){
       }
       else if(pressed == PB_OK){
         delay(200);
-        UTC_OFFSET = UTC_OFFSET+(temp_minute * 60);
+        if(temp_hour >= 0){
+          UTC_OFFSET = UTC_OFFSET+(temp_minute * 60);
+        }
+        else{
+          UTC_OFFSET = UTC_OFFSET-(temp_minute * 60);
+        }
         break;
       }
       else if(pressed == PB_CANCEL){
@@ -366,6 +416,10 @@ void set_time_zone(){
   delay(1000);
 
 }
+
+/****************************************************************************
+------------------------   Function to Set Alarms  -----------------------
+****************************************************************************/
 
 void set_alarm(int alarm){
   int temp_hour = alarm_hours[alarm];
@@ -437,6 +491,10 @@ void set_alarm(int alarm){
   delay(1000);
 }
 
+/****************************************************************************
+---------------   Function to beep when the button pressed -------------------
+****************************************************************************/
+
 void button_beep(){
   tone(BUZZER,notes[0]);
   delay(10);
@@ -444,24 +502,28 @@ void button_beep(){
   delay(10);
 }
 
+/****************************************************************************
+---------------   Function to Check Temperature and Humidity  ---------------
+****************************************************************************/
+
 void check_temp(){
   TempAndHumidity data = dhtSensor.getTempAndHumidity();
-  if(data.temperature > 35){
+  if(data.temperature > 32){
     display.clearDisplay();
     print_line("TEMP HIGH",0,40,2);
     delay(1000);
   }
-  if(data.temperature < 25){
+  if(data.temperature < 26){
     display.clearDisplay();
     print_line("TEMP LOW",0,40,2);
     delay(1000);
   }
-  if(data.humidity > 40){
+  if(data.humidity > 80){
     display.clearDisplay();
     print_line("HUMIDITY HIGH",0,50,1);
     delay(1000);
   }
-  if(data.humidity < 20){
+  if(data.humidity < 60){
     display.clearDisplay();
     print_line("HUMIDITY LOW",0,50,1);
     delay(1000);

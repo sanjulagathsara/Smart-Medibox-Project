@@ -164,24 +164,6 @@ void print_time_now(void){
 ****************************************************************************/
 
 void update_time(void){
-  // time_now = millis()/1000;
-
-  // seconds = time_now - time_last;
-
-  // if(seconds >= 60){
-  //   minutes += 1;
-  //   time_last += 60;
-  // }
-
-  // if(minutes == 60){
-  //   hours += 1;
-  //   minutes = 0;
-  // }
-
-  // if(hours == 24){
-  //   days += 1;
-  //   hours = 0;
-  // }
 
   struct tm timeinfo;
   getLocalTime(&timeinfo);

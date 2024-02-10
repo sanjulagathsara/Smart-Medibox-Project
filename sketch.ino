@@ -386,6 +386,7 @@ void set_time_zone(){
       }
       else if(pressed == PB_CANCEL){
         delay(200);
+        delay(10);
         break;
       }
   }

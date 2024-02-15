@@ -478,7 +478,7 @@ void set_alarm(int alarm){
 ****************************************************************************/
 
 void button_beep(){
-  tone(BUZZER,notes[0]);
+  tone(BUZZER,notes[0]); // Beep
   delay(10);
   noTone(BUZZER);
   delay(10);

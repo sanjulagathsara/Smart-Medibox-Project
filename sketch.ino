@@ -242,7 +242,7 @@ void ring_alarm(void){
 ****************************************************************************/
 
 void go_to_menu(void){
-  display.clearDisplay(); #Clearing the display
+  display.clearDisplay();
   print_line("Menu",0,2,2);
   delay(1000);
   while(digitalRead(PB_CANCEL) == HIGH){

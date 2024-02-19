@@ -394,7 +394,7 @@ void set_time_zone(){
 
 
   display.clearDisplay();
-  print_line("Time Zone is set",0,0,2);
+  print_line("Time Zone is set",0,0,2); // Time zone set
   delay(1000);
 
 }

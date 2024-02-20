@@ -332,7 +332,7 @@ void set_time_zone(){
     display.clearDisplay();
     print_line("Enter hour: " + String(temp_hour),0,0,2);
 
-    int pressed = wait_for_button_press(); //Waiting until the button is pressed
+    int pressed = wait_for_button_press();
 
       if(pressed == PB_UP){
         delay(200);

@@ -232,6 +232,7 @@ void ring_alarm(void){
       delay(2);
     }
   }
+
   digitalWrite(LED_1,LOW);
   display.clearDisplay();
 
@@ -245,7 +246,9 @@ void go_to_menu(void){
   display.clearDisplay();
   print_line("Menu",0,2,2);
   delay(1000);
+
   while(digitalRead(PB_CANCEL) == HIGH){
+    
     display.clearDisplay();
     print_line(modes[current_mode],0,2,2);
     delay(1000);

@@ -1,3 +1,8 @@
+// Medibox Project
+// Name - Gathsara J.A.S
+// Index Number - 210180L
+
+
 // Libraries
 #include <Wire.h> // I2C Library
 #include <Adafruit_GFX.h> // Graphics Library
@@ -516,7 +521,7 @@ void check_temp(){
   if(data.humidity < 60){
     display.clearDisplay();
     print_line(" HUMIDITY",0,20,2);
-    print_line("   HIGH",0,40,2);
+    print_line("   LOW",0,40,2);
     delay(1000);
   }
 }

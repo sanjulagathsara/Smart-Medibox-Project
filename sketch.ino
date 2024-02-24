@@ -479,7 +479,7 @@ void set_alarm(int alarm){
   display.clearDisplay();
   alarm_enabled = true;
   alarm_triggered[alarm] = false;
-  print_line("Alarm "+String(alarm)+" is set",0,0,2);
+  print_line("Alarm "+String(alarm+1)+" is set",0,0,2);
   delay(1000);
 }
 

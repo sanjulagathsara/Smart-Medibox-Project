@@ -104,7 +104,13 @@ void setup() {
   display.clearDisplay();
   print_line("Welcome to MediBox!",0,0,2);
 
-  delay(2000);
+  for(int i=0;i<5;i++){
+    tone(BUZZER,notes[i]); // Beep
+    delay(100);
+  }
+  noTone(BUZZER);
+
+  delay(1000);
 
 
 }
@@ -412,7 +418,7 @@ void set_alarm(int alarm){
 
   while(true){
     display.clearDisplay();
-    print_line("Enter hour: " + String(temp_hour),0,0,2); #Hour Entering
+    print_line("Enter hour: " + String(temp_hour),0,0,2); 
 
     int pressed = wait_for_button_press();
 

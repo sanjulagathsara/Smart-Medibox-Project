@@ -59,8 +59,8 @@ int notes[] = {C,D,E,F,G,A,B,C_H};
 
 // Mode parameters
 int current_mode = 0;
-int max_modes = 4;
-String modes[] = {"1 - Set Time Zone","2 - Set Alarm 1","3 - Set Alarm 2","4 - Set Alarm 3","5 - Disable Alarm"};
+int max_modes = 5;
+String modes[] = {"1 - Set Time Zone","2 - Set Alarm 1","3 - Set Alarm 2","4 - Set Alarm 3","5 - Disable Alarms"};
 
 /****************************************************************************
 -----------------------------   Setting Up  ----------------------------------
@@ -137,9 +137,6 @@ void loop() {
 ****************************************************************************/
 
 void print_line(String text,int column,int row,int text_size){
-   // Clearing the buffer
-  //display.clearDisplay();
-
 
   display.setTextSize(text_size);
   display.setTextColor(SSD1306_WHITE);

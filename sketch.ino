@@ -1,8 +1,9 @@
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-#include <DHTesp.h>
-#include <WiFi.h>
+// Libraries
+#include <Wire.h> // I2C Library
+#include <Adafruit_GFX.h> // Graphics Library
+#include <Adafruit_SSD1306.h> // OLED Display Library
+#include <DHTesp.h> // DHT Library
+#include <WiFi.h> // WiFi Library
 
 // Defining OLED display parameters
 #define DISPLAY_WIDTH 128
@@ -248,7 +249,7 @@ void go_to_menu(void){
   delay(1000);
 
   while(digitalRead(PB_CANCEL) == HIGH){
-    
+
     display.clearDisplay();
     print_line(modes[current_mode],0,2,2);
     delay(1000);

@@ -502,22 +502,24 @@ void check_temp(){
   TempAndHumidity data = dhtSensor.getTempAndHumidity();
   if(data.temperature > 32){
     display.clearDisplay();
-    print_line("TEMP HIGH",0,40,2);
+    print_line(" TEMP HIGH",0,30,2);
     delay(1000);
   }
   if(data.temperature < 26){
     display.clearDisplay();
-    print_line("TEMP LOW",0,40,2);
+    print_line(" TEMP LOW",0,30,2);
     delay(1000);
   }
   if(data.humidity > 80){
     display.clearDisplay();
-    print_line("HUMIDITY HIGH",0,50,1);
+    print_line(" HUMIDITY",0,20,2);
+    print_line("   HIGH",0,40,2);
     delay(1000);
   }
   if(data.humidity < 60){
     display.clearDisplay();
-    print_line("HUMIDITY LOW",0,50,1);
+    print_line(" HUMIDITY",0,20,2);
+    print_line("   HIGH",0,40,2);
     delay(1000);
   }
 }

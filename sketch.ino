@@ -313,6 +313,7 @@ int wait_for_button_press(){
       button_beep();
       delay(200);
       return PB_CANCEL;
+      
     }
   }
 }
@@ -483,6 +484,7 @@ void set_alarm(int alarm){
   alarm_triggered[alarm] = false;
   print_line("Alarm "+String(alarm+1)+" is set",0,0,2);
   delay(1000);
+
 }
 
 /****************************************************************************

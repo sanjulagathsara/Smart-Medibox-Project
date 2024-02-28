@@ -147,7 +147,6 @@ void print_line(String text,int column,int row,int text_size){
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(column,row); // Column,Row
   display.println(text);
-
   display.display();
 }
 
@@ -280,6 +279,7 @@ void go_to_menu(void){
       delay(200);
       run_mode(current_mode);
     }
+
     else if(pressed == PB_CANCEL){
       delay(200);
       break;
@@ -313,7 +313,7 @@ int wait_for_button_press(){
       button_beep();
       delay(200);
       return PB_CANCEL;
-      
+
     }
   }
 }

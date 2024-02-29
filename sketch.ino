@@ -17,7 +17,7 @@
 #define DISPLAY_ADDRESS 0x3C
 
 // NTP Server details
-#define NTP_SERVER   "pool.ntp.org"
+#define NTP_SERVER   "pool.ntp.org" //NTP Server
 int UTC_OFFSET = 0;
 int UTC_OFFSET_DST = 0;
 
@@ -114,7 +114,6 @@ void setup() {
     delay(100);
   }
   noTone(BUZZER);
-
   delay(1000);
 
 

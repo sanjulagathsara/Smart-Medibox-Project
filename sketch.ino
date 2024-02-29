@@ -11,8 +11,8 @@
 #include <WiFi.h> // WiFi Library
 
 // Defining OLED display parameters
-#define DISPLAY_WIDTH 128
-#define DISPLAY_HEIGHT 64
+#define DISPLAY_WIDTH 128 // OLED display width, in pixels
+#define DISPLAY_HEIGHT 64 // OLED display height, in pixels
 #define DISPLAY_RESET -1
 #define DISPLAY_ADDRESS 0x3C
 

@@ -166,7 +166,6 @@ void print_line(String text,int column,int row,int text_size){
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(column,row); // Column,Row
   display.println(text);
-
   display.display();
 }
 

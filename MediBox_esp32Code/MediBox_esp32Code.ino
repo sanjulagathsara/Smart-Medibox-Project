@@ -2,6 +2,8 @@
 // Name - Gathsara J.A.S
 // Index Number - 210180L
 
+#include <WiFiManager.h>
+
 
 // Libraries
 #include <Wire.h> // I2C Library
@@ -15,6 +17,9 @@
 #define DISPLAY_HEIGHT 64
 #define DISPLAY_RESET -1
 #define DISPLAY_ADDRESS 0x3C
+
+String WIFI_SSID = "ElectroCube Wifi2";
+String WIFI_PASSWORD = "electrocubesanjula88";
 
 // NTP Server details
 #define NTP_SERVER   "pool.ntp.org"
@@ -109,29 +114,12 @@ String modes[] = {"1 - Set Time Zone","2 - Set Alarm 1","3 - Set Alarm 2","4 - S
 
 void setup() {
   // put your setup code here, to run once:
-
-  display.clearDisplay();
-  display.drawBitmap(32, 0, pills, 64, 64, WHITE);
- 
-  display.display();
-
-
   pinMode(BUZZER, OUTPUT);
   pinMode(LED_1, OUTPUT);
   pinMode(PB_CANCEL, INPUT);
   pinMode(PB_OK,INPUT);
   pinMode(PB_UP,INPUT);
   pinMode(PB_DOWN,INPUT);
-
-  for(int i=0;i<5;i++){
-    digitalWrite(LED_1,HIGH);
-    delay(100);
-    digitalWrite(LED_1,LOW);
-    delay(100);
-  }
-
-  dhtSensor.setup(DHTPIN,DHTesp::DHT11);
-
 
   Serial.begin(9600);
   Serial.println("MediBox is Initializing!");
@@ -143,6 +131,28 @@ void setup() {
     for(;;);
   }
 
+
+  display.clearDisplay();
+  display.drawBitmap(32, 0, pills, 64, 64, WHITE);
+ 
+  display.display();
+
+  WiFiManager wm;
+
+  
+
+  for(int i=0;i<5;i++){
+    digitalWrite(LED_1,HIGH);
+    delay(100);
+    digitalWrite(LED_1,LOW);
+    delay(100);
+  }
+
+  dhtSensor.setup(DHTPIN,DHTesp::DHT11);
+
+
+  
+
   display.clearDisplay();
   print_line("Smart",30,10,2);
   print_line("Medibox",20,40,2);
@@ -152,11 +162,43 @@ void setup() {
   digitalWrite(BUZZER,LOW);
   delay(500);
 
-  WiFi.begin("ElectroCube Wifi2","electrocubesanjula88",6);
+  WiFi.begin(WIFI_SSID,WIFI_PASSWORD,6);
+  display.clearDisplay();
+  print_line("Connecting to WiFi",10,10,1);
+  print_line(WIFI_SSID,0,50,1);
+  
+  int tempConnectionCounter = 0;
   while(WiFi.status() != WL_CONNECTED){
     delay(250);
-    display.clearDisplay();
-    print_line("Connecting to WiFi",0,20,2);
+    //display.clearDisplay();
+    //print_line("Connecting to WiFi",0,20,1);
+    print_line(".",tempConnectionCounter,30,1);
+    tempConnectionCounter += 4;
+    if(tempConnectionCounter >= 127){
+      //tempConnectionCounter = 0;
+      //display.clearDisplay();
+      //print_line("Connecting to WiFi",10,10,1);
+      //print_line(WIFI_SSID,0,50,1);
+      button_beep();
+      break;
+    }
+  }
+
+  display.clearDisplay();
+
+  if(tempConnectionCounter >= 127){
+    bool res = wm.autoConnect("MediBox","12345678");
+    if(!res){
+      Serial.println("Wifi AP failed");
+      print_line("Connecting to WiFi",10,10,1);
+      delay(1000);
+      ESP.restart();
+    }
+    else{
+      Serial.println("Wifi AP Done");
+      print_line("Connecting to WiFi",10,10,1);
+      delay(1000);
+    }
   }
 
   display.clearDisplay();

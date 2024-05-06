@@ -23,11 +23,12 @@ PubSubClient mqttClient(espClient);
 Servo servo;
 
 // Define Pins
-#define BUZZER 5
+#define BUZZER 4
 #define LED_1 15
 #define LEFT_LDR 34
 #define RIGHT_LDR 35
-#define SERVO_PIN 4
+
+const int SERVO_PIN = 18;
 
 // Image bitmap of pills
 const unsigned char pills[] PROGMEM = {
@@ -98,7 +99,6 @@ void setup()
     // put your setup code here, to run once:
     pinMode(BUZZER, OUTPUT);
     pinMode(LED_1, OUTPUT);
-    pinMode(SERVO_PIN, OUTPUT);
 
     servo.attach(SERVO_PIN, 500, 2400);
     servo.write(0);
@@ -144,12 +144,12 @@ void setup()
     for (int i = 0; i < 180; i++)
     {
         servo.write(i);
-        delay(30);
+        delay(15);
     }
     for (int i = 180; i >= 0; i--)
     {
         servo.write(i);
-        delay(30);
+        delay(15);
     }
 
     setup_mqtt();
@@ -168,15 +168,21 @@ void loop()
         connectToBroker();
     }
 
+    // Reading LDR values
     int left_value = analogRead(LEFT_LDR);
     int right_value = analogRead(RIGHT_LDR);
 
+    // Converting LDR values between 0 - 1
     float left_send = 1 - left_value / 1023.0;
     float right_send = 1 - right_value / 1032.0;
 
+    // Displaying values in Serial Monitor
+    Serial.print("left LDR : ");
     Serial.print(left_send);
-    Serial.print("  ");
-    Serial.println(right_send);
+    Serial.print("  Right LDR : ");
+    Serial.print(right_send);
+    Serial.print("  Motor Angle : ");
+    Serial.println(servoAngle);
 
     display.clearDisplay();
     print_line("Left LDR : " + String(left_send), 0, 0, 1);

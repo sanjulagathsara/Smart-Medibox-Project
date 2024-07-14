@@ -39,28 +39,32 @@ The following libraries are used in this project:
 ## Circuit Diagram
 
 <p align="center">
-<img width="500" height="500" src="IMAGES/circuit.png">
+<img  height="500" src="IMAGES/circuit.png">
+<br/>
 <em>Circuit Diagram<em/>
 <p/>
 
 ## Schematic Diagram
 
 <p align="center">
-<img width="500" height="500" src="IMAGES/Schametic.png">
+<img height="500" src="IMAGES/Schametic.png">
+<br/>
 <em>Schematic Diagram<em/>
 <p/>
 
 ## PCB Layout
 
 <p align="center">
-<img width="500" height="500" src="IMAGES/Layout.png">
+<img height="500" src="IMAGES/Layout.png">
+<br/>
 <em>PCB Layout<em/>
 <p/>
 
 ## 2D view
 
 <p align="center">
-<img width="500" height="500" src="IMAGES/2dView.png">
+<img height="500" src="IMAGES/2dView.png">
+<br/>
 <em>2D view<em/>
 <p/>
 
@@ -68,6 +72,7 @@ The following libraries are used in this project:
 
 <p align="center">
 <img src="IMAGES/pcb.gif">
+<br/>
 <em>PCB<em/>
 <p/>
 
